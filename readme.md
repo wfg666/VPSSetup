@@ -8,9 +8,9 @@ ubuntu 18.04, kernel >= 4.9
 >cd VPSSetup
 >cp v2ray_config.json.example v2ray_config.json
 >cp shadowsocks_config.json.example shadowsocks_config.json
->source setup.zsh
+>source setup.sh
 
-with -u to install git, vim, zsh, tmux, trash-cli, nload, curl, wget, axel, python-pip, digitalOcean monitoring agent and set ufw.
+source setup.sh -t or source tools.sh to install git, vim, zsh, tmux, trash-cli, nload, curl, wget, axel, python-pip, digitalOcean monitoring agent and set ufw.
 
 ## config
 | Port | Protocol | Comment |
