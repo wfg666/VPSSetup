@@ -1,0 +1,265 @@
+{
+    "log":    
+    { 
+        "access": "/tmp/access.log", // 访问日志文件
+        "error": "/var/log/v2ray/error.log", // 错误日志文件
+        "loglevel": "warning" // 错误日志等级
+    },
+
+    "reverse":{ //反向代理设置 用于穿透内网 https://toutyrater.github.io/app/reverse2.html
+        "portals":
+        [{  
+            "tag":"portal",
+            "domain":"foo.bar" // 必须和内网服务器设定的域名一样
+        }]
+    },
+
+    "inbounds":[
+        // shadowsocks
+        {
+            "tag": "shadowsocks", 
+            "port": "35001-35050",
+            "protocol": "shadowsocks",
+            "settings": {
+                "method": "aes-256-gcm",
+                "password": "fuckgongfeiwall"
+            }
+        },
+        // TG MTProto
+        {
+            "tag": "tg-in",
+            "port": 35101,
+            "protocol": "mtproto",
+            "settings": {
+                "users": [{"secret": "1234567890123456789012"}]
+            }
+        },
+        // reverse proxy server 接受内网机器请求
+        {  
+            "tag": "reverse-server",// 标签，路由中用到
+            "port":35102,
+            "protocol":"vmess",
+            "settings":{  
+                "clients":[  
+                {  
+                    "id":"12345678-1234-1234-1234-123456789012",
+                    "alterId":64
+                }]
+            }
+        },
+        // reverse proxy client 接受客户访问请求
+        {  
+            "tag":"reverse-client", // 标签，路由中用到
+            "port":35103,
+            "protocol":"dokodemo-door",
+            "settings":{  
+                "clients":[  
+                {  
+                    "id":"12345678-1234-1234-1234-123456789012",
+                    "alterId":64
+                }]
+            }
+        },
+        // VMess TCP port
+        {
+            "tag":"tcpHostPort",   
+            "port": 35200,
+            "protocol": "vmess",
+            "settings": {
+                "clients": [{
+                    "id": "12345678-1234-1234-1234-123456789012",
+                    "alterId": 64
+                }],
+                "detour": { //绕行配置，即指示客户端使用 dynamicPort 的配置通信
+                    "to": "tcpDynPorts"   
+                }
+            }
+        },
+        {
+            "protocol": "vmess",
+            "port": "35201-35232", // 端口范围
+            "tag": "tcpDynPorts",  // 与上面的 detour to 相同
+            "settings": {
+                "clients": [
+                {
+                    "id": "12345678-1234-1234-1234-123456789012",
+                    "alterId": 64
+                }]
+            },
+            "allocate": {            // 分配模式
+                "strategy": "always",
+                "refresh": 10, //minutes
+                "concurrency": 3 
+            }
+        },
+        // VMess KCP port
+        {
+            "tag":"kcpHostPort",  
+            "port": 35300,
+            "protocol": "vmess",
+            "settings": {
+                "clients": [{
+                    "id": "12345678-1234-1234-1234-123456789012",
+                    "alterId": 64
+                }],
+                "detour": { //绕行配置，即指示客户端使用 dynamicPort 的配置通信
+                    "to": "kcpDynPorts"   
+                }
+            },
+            "streamSettings": {
+                "network": "kcp"
+            }
+        },
+        {
+            "protocol": "vmess",
+            "port": "35301-35332", // 端口范围
+            "tag": "kcpDynPorts",  // 与上面的 detour to 相同
+            "settings": {
+                "clients": [
+                {
+                    "id": "12345678-1234-1234-1234-123456789012",
+                    "alterId": 64
+                }]
+            },
+            "allocate": {            // 分配模式
+                "strategy": "always",
+                "refresh": 10, //minutes
+                "concurrency": 3 
+            },
+            "streamSettings": {
+                "network": "kcp",
+                "kcpSettings": 
+                {   
+                    "uplinkCapacity": 4,
+                    "downlinkCapacity": 20
+                    //"congestion": true,
+                }
+            }
+        },
+        // Vmess
+        {
+            "protocol": "vmess",
+            "port": "35400-35410", // 端口范围
+            "tag": "vmess-wechat",  
+            "settings": {
+                "clients": [
+                {
+                    "id": "12345678-1234-1234-1234-123456789012",
+                    "alterId": 64
+                }]
+            },
+            "allocate": {            // 分配模式
+                "strategy": "always",
+                "refresh": 10, //minutes
+                "concurrency": 3 
+            },
+            "streamSettings": {
+                "network": "kcp",
+                "kcpSettings": 
+                {
+                    "type": "wechat-video",
+                    "uplinkCapacity": 4,
+                    "downlinkCapacity": 20
+                    //"congestion": true,
+                }
+            }
+        },
+        // api
+        {
+            "listen": "127.0.0.1",
+            "port": 35104,
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "127.0.0.1"
+            },
+            "tag": "api"
+        }
+    ],
+
+    "outbounds": [
+        // direct
+        {
+            "protocol": "freedom",
+            "settings": {},
+            "tag":"direct"
+        },
+        // block
+        {
+            "protocol": "blackhole",
+            "settings": {},
+            "tag": "blocked"
+        },
+        // telegram MTProto
+        {
+            "tag": "tg-out",
+            "protocol": "mtproto",
+            "settings": {}
+        }
+    ],
+
+    // routing
+    "routing": {
+        "strategy": "rules",
+        "settings": {
+            "rules": [
+                // telegram MTProto
+                {
+                    "type": "field",
+                    "inboundTag": ["tg-in"],
+                    "outboundTag": "tg-out"
+                },
+                // api
+                {
+                    "type": "field",
+                    "inboundTag": [ "api" ],
+                    "outboundTag": "api"
+                },
+                // ban local address for security
+                {
+                    "type": "field",
+                    "ip": [
+                        "0.0.0.0/8","10.0.0.0/8","100.64.0.0/10","127.0.0.0/8","169.254.0.0/16",
+                        "172.16.0.0/12","192.0.0.0/24","192.0.2.0/24","192.168.0.0/16","198.18.0.0/15",
+                        "198.51.100.0/24","203.0.113.0/24","::1/128","fc00::/7","fe80::/10"
+                    ],
+                    "outboundTag": "blocked"
+                },
+                // reverse proxy
+                { 
+                    "type":"field",
+                    "inboundTag":[ "reverse-client" ],
+                    "outboundTag":"portal"
+                },
+                { 
+                    "type":"field",
+                    "inboundTag":[ "reverse-server" ],
+                    "domain":[ "full:foo.bar" ],
+                    "outboundTag":"portal"
+                }
+            ]
+        }
+    },
+
+    "stats": {},
+    "policy":{
+        "levels": {
+            "0": {
+                "handshake": 20,
+                "connIdle": 600,
+                "statsUserUplink": true,
+                "statsUserDownlink": true,
+                "bufferSize": 8192
+            }
+        },
+        "system": {
+            "statsInboundUplink": true,
+            "statsInboundDownlink": true
+        }
+    },
+    "api": {
+        "services": [
+            "HandlerService","StatsService"
+        ],
+        "tag": "api"
+    }
+}

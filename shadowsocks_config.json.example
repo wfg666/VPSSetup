@@ -1,0 +1,30 @@
+{
+    "server":"::",
+    "local_address": "127.0.0.1",
+    "local_port":1080,
+    "port_password": {
+        "35051": "fuckgongfeiwall",
+        "35052": "fuckgongfeiwall",
+        "35053": "fuckgongfeiwall",
+        "35054": "fuckgongfeiwall",
+        "35055": "fuckgongfeiwall",
+        "35056": "fuckgongfeiwall",
+        "35057": "fuckgongfeiwall",
+        "35058": "fuckgongfeiwall",
+        "35059": "fuckgongfeiwall",
+        "35060": "fuckgongfeiwall",
+        "35061": "fuckgongfeiwall",
+        "35062": "fuckgongfeiwall",
+        "35063": "fuckgongfeiwall",
+        "35064": "fuckgongfeiwall",
+        "35065": "fuckgongfeiwall",
+        "35066": "fuckgongfeiwall",
+        "35067": "fuckgongfeiwall",
+        "35068": "fuckgongfeiwall",
+        "35069": "fuckgongfeiwall",
+        "35070": "fuckgongfeiwall"
+    },
+    "timeout":300,
+    "method":"aes-256-gcm",
+    "fast_open": true
+}

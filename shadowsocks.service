@@ -1,0 +1,36 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          shadowsocks
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: start shadowsocks 
+# Description:       start shadowsocks
+### END INIT INFO
+
+start(){
+        ssserver -c /etc/shadowsocks.json -d start
+}
+stop(){
+        ssserver -c /etc/shadowsocks.json -d stop
+}
+restart(){
+        ssserver -c /etc/shadowsocks.json -d restart
+}
+
+case "$1" in
+start)
+        start
+        ;;
+stop)
+        stop
+        ;;
+restart)
+        restart
+        ;;
+*)
+        echo "Usage: $0 {start|restart|stop}"
+        exit 1
+        ;;
+esac
