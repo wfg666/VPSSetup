@@ -5,10 +5,10 @@ Fuck Gong Fei Wall!
 ubuntu 18.04, kernel >= 4.9
 
 ## Usage
->cd VPSSetup
->cp v2ray_config.json.example v2ray_config.json
->cp shadowsocks_config.json.example shadowsocks_config.json
->source setup.sh
+    cd VPSSetup
+    cp v2ray_config.json.example v2ray_config.json
+    cp shadowsocks_config.json.example shadowsocks_config.json
+    source setup.sh
 
 source setup.sh -t or source tools.sh to install git, vim, zsh, tmux, trash-cli, nload, curl, wget, axel, python-pip, digitalOcean monitoring agent and set ufw.
 
@@ -31,9 +31,7 @@ For example you can download a huge file on your VPS outside the hugging wall, t
 
 First you need to create a repo, share an upload link without password, then note the repo_id and the token.
 ![seafile_screenshot](http://github.com/mhc994/VPSSetup/raw/master/seafile.jpg)
->seafile_public_uploader.sh repo_id token file [filename]
+    seafile_public_uploader.sh repo_id token file [filename]
 
 ![cmd](http://github.com/mhc994/VPSSetup/raw/master/cmd.png)
-
-
 
