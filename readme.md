@@ -31,7 +31,7 @@ For example you can download a huge file on your VPS outside the hugging wall, t
 
 First you need to create a repo, share an upload link without password, then note the repo_id and the token.
 ![seafile_screenshot](https://github.com/mhc994/VPSSetup/blob/master/seafile.jpg)
+
     seafile_public_uploader.sh repo_id token file [filename]
 
-![cmd](http://github.com/mhc994/VPSSetup/raw/master/cmd.png)
-
+![cmd](https://github.com/mhc994/VPSSetup/blob/master/cmd.png)
