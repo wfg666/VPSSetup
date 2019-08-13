@@ -30,7 +30,7 @@ source setup.sh -t or source tools.sh to install git, vim, zsh, tmux, trash-cli,
 For example you can download a huge file on your VPS outside the hugging wall, then use this script to upload it to a seafile server like ```cloud.tsinghua.edu.cn```
 
 First you need to create a repo, share an upload link without password, then note the repo_id and the token.
-![seafile_screenshot](http://github.com/mhc994/VPSSetup/raw/master/seafile.jpg)
+![seafile_screenshot](https://github.com/mhc994/VPSSetup/blob/master/seafile.jpg)
     seafile_public_uploader.sh repo_id token file [filename]
 
 ![cmd](http://github.com/mhc994/VPSSetup/raw/master/cmd.png)
