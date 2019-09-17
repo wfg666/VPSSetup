@@ -157,7 +157,7 @@
                 "network": "kcp",
                 "kcpSettings": 
                 {
-                    "type": "wechat-video",
+                    "header":                                                                                                                                                          {                                                                                                                                                                          "type": "wechat-video"                                                                                                                                     }, 
                     "uplinkCapacity": 4,
                     "downlinkCapacity": 20
                     //"congestion": true,
